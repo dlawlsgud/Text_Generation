@@ -6,7 +6,7 @@
 > ##### 2. 추상 요약 : 본문 전체 내용을 이해하고 이해한 내용을 바탕으로 새로운 문장을 생성한다.
 ##### - Text summarization 기본 Architecture은 Encoder에 document를 넣고 Decoder에서 summary를 출력하는 "Sequence-to-Sequence"구조다.
 ##### - 최근 대량 코퍼스를 사용해 Self-Supervised Learning 시킨 Pretrained-model을 이용해 Downstream task에 맞게 Fine-tuning 시키는 Transfer Learning이 좋은 성능을 보여준다.
-
+<br><br>
 ### 연구주제 => Curriculum Learning을 적용한 생성요약
 
 
@@ -19,4 +19,17 @@
   <br> <br>
   추출 요약문(Reference extractive-summary)이 없는 경우를 대비하여 **임시 추출 요약문(Pseudo extractive-summary)을 만들기 위해 Lead-N, TextRank, Principal 전략을 사용**했습니다. 전략을 통해 만든 임시 추출 요약문을 가지고 사전학습 모델에 커리큘럼 학습을 적용한 모델 또한 생성 요약 학습만 시킨 모델보다 뛰어난 성능을 보였습니다. 
 
+### 실험 결과
+<br><br>
+![1](https://user-images.githubusercontent.com/64317686/114987632-56b4ae80-9ed0-11eb-9295-27f85ca581f5.JPG)
+<br>
+> 위 실험을 통해 **커리큘럼 학습을 적용하여 미세조정 시킨 모델**의 성능이 단지 참조 추출요약문 혹은 추상 요약문으로만 미세조정 시킨 모델보다 **좋은 성능**을 보여줬다.
+ 
+![1](https://user-images.githubusercontent.com/64317686/114993660-fd03b280-9ed6-11eb-92bb-f1b7286dee13.JPG)
+<br>
+> Lead-N 전략을 사용했을 때 생성 요약문을 가지고 미세조정 시킨 모델보다 성능이 낮았다. 하지만 **TextRank 전략**과 **Principal 전략**을 사용해 커리큘럼 학습 시킨 모델 성능은 생성 요약문을 가지고 미세조정 시킨 모델보다 **좋은 성능**을 보여줬다. TextRank 전략은 1번의 추출요약 학습 이후 9번 생성요약 학습 시켰을 때 Rouge-1, Rouge-2, Rouge-L score 모두 가장 좋은 성능을 보였다.  반면  Principal 전략을 사용 했을 때는 Rouge-1, Rouge-2, Rouge-L score 모두 각기 다른 횟수로 학습 시켰을 때 가장 좋은 성능을 보여줬다. **Rouge1-F1 score를 척도로 사용해 임시 추출 요약문을 추출한 Principal 전략이 Rouge-1 socre 부분에서 가장 좋은 성능**을 보였다. 그리고 **Rouge-2, Rouge-L score 부분에서는 Textrank 전략을 사용했을 때 성능이 가장 좋았다. **
 
+<br><br>
+### 결론
+> **추출 요약문과 생성 요약문을 사용하는 커리큘럼 학습 방법이 생성요약 과제에서도 성능 향상에 도움을 준다는 가설을 증명**했다. 
+추출 요약문이 없는 경우를 대비하여 임시 추출 요약문을 만드는 전략을 사용했다.  **Textrank 와 Principal 전략을 사용해 임시 추출 요약문** 을 만들어 커리큘럼 학습을 적용한 모델과 추출 요약문을 사용해 커리큘럼 학습을 진행한 모델을 비교 했을 때 **준수한 성능**을 보여줬다.
